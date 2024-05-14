@@ -1,7 +1,7 @@
 {
   "name": "react-auto-page-router",
   "private": false,
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "main": "dist/react-auto-page-router.umd.js",
   "module": "dist/react-auto-page-router.es.js",
@@ -45,5 +45,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BinovaGautam/react-auto-page-router.git"
+  }
 }
