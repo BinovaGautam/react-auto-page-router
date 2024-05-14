@@ -1,18 +1,33 @@
 {
   "name": "react-auto-page-router",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.3",
   "type": "module",
+  "main": "dist/react-auto-page-router.umd.js",
+  "module": "dist/react-auto-page-router.es.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "dev": "tsup --watch",
+    "build": "tsc   && vite build",
+    "type-check": "tsc --noEmit",
+    "rebuild": "rm -rf dist && tsc   && vite build",
+    "prepare": "npm run rebuild"
   },
   "dependencies": {
     "vite": "^5.2.0"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/react-auto-page-router.es.js",
+      "require": "./dist/react-auto-page-router.umd.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
+    "@types/node": "^20.12.12",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
@@ -25,6 +40,10 @@
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.13",
     "react-router-dom": "^6.23.1",
-    "typescript": "^5.2.2"
-  }
+    "typescript": "^5.2.2",
+    "vite-plugin-dts": "^3.9.1"
+  },
+  "files": [
+    "dist"
+  ]
 }

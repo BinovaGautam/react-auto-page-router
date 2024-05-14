@@ -1,11 +1,19 @@
 import React, { FunctionComponent, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import {routes , ErrorBoundary} from './lib';
-import { IAppConfig } from './types';
+import {createRoutes , ErrorBoundary} from './lib';
+
+export interface IAppConfig {
+  SuspenseFallBack?: React.ReactNode;
+  importedPages : Record<string, any>;
+}
 
 function App({
-  SuspenseFallBack = <div>Loading...</div>
+  SuspenseFallBack = <div>Loading...</div>,
+  importedPages = {}
+
 }: IAppConfig) {
+  const routes = createRoutes(importedPages);
+  console.log('ROUTES GOES ON HERE ======>>>>>>',routes);
 
   const renderWithLayouts = (Component: FunctionComponent, layouts: FunctionComponent[]) => {
     return layouts.reduce((acc, Layout) => {
