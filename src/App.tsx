@@ -1,5 +1,5 @@
 import React, { FunctionComponent, Suspense } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import {createRoutes , ErrorBoundary} from './lib';
 
 export interface IAppConfig {
@@ -7,18 +7,31 @@ export interface IAppConfig {
   importedPages : Record<string, any>;
 }
 
+interface ComponentProps {
+  params: any; // Replace 'any' with the actual type of 'params'
+  searchParams: URLSearchParams;
+}
+
+
 function App({
   SuspenseFallBack = <div>Loading...</div>,
   importedPages = {}
 
 }: IAppConfig) {
   const routes = createRoutes(importedPages);
-  console.log('ROUTES GOES ON HERE ======>>>>>>',routes);
 
-  const renderWithLayouts = (Component: FunctionComponent, layouts: FunctionComponent[]) => {
-    return layouts.reduce((acc, Layout) => {
-      return React.createElement(Layout, {}, acc);
-    }, React.createElement(Component));
+  const renderWithLayouts = (Component: FunctionComponent<ComponentProps>, layouts: FunctionComponent[]) => {
+    const WrapperComponent: FunctionComponent = () => {
+      const params = useParams();
+      const searchParams = new URLSearchParams(window.location.search);
+      const elementWithParams = React.createElement(Component, { params, ...params, searchParams});
+
+      return layouts.reduce((acc: React.ReactElement, Layout: FunctionComponent) => {
+        return React.createElement(Layout, {}, acc);
+      }, elementWithParams);
+    };
+
+    return <WrapperComponent />;
   };
 
   return (
