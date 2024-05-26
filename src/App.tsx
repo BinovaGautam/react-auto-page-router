@@ -1,10 +1,18 @@
-import React, { FunctionComponent, Suspense } from 'react';
+import React, { FunctionComponent, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import {createRoutes , ErrorBoundary} from './lib';
+
+const NotFound = () => (
+  <div style={{ height: '100vh', width: '100%', display: 'flex',flexDirection:'column', justifyContent: 'center', alignItems: 'center', }} >
+    <h1>404!</h1>
+    <h2>Page Not Found</h2>
+  </div>
+)
 
 export interface IAppConfig {
   SuspenseFallBack?: React.ReactNode;
   importedPages : Record<string, any>;
+   
 }
 
 interface ComponentProps {
@@ -18,6 +26,7 @@ function App({
   importedPages = {}
 
 }: IAppConfig) {
+  console.log('importedPages =====>>>>>>>', importedPages);
   const routes = createRoutes(importedPages);
 
   const renderWithLayouts = (Component: FunctionComponent<ComponentProps>, layouts: FunctionComponent[]) => {
@@ -33,6 +42,10 @@ function App({
 
     return <WrapperComponent />;
   };
+  
+  //NotFound page is from the importedPages root level not-found page.
+ 
+  // lazy(importedPages['/not-found'] as any) || (() => <div>Not Found</div>);
 
   return (
     <Router>
@@ -46,17 +59,18 @@ function App({
               : React.createElement(Component);
 
             return (
-              <Route
-                key={i}
-                path={path}
+              <Route key={i} path={path}
                 element={
-                  <ErrorBoundary fallback={<div>Failed to load the route...</div>}>
+                  <ErrorBoundary>
                     {element}
                   </ErrorBoundary>
                 }
               />
             );
           })}
+
+          {/* This route catches all unmatched routes */}
+          <Route path="*" Component={NotFound} />
         </Routes>
       </Suspense>
     </Router>

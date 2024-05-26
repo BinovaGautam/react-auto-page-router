@@ -1,7 +1,7 @@
 {
   "name": "react-auto-page-router",
   "private": false,
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "main": "dist/react-auto-page-router.umd.js",
   "module": "dist/react-auto-page-router.es.js",
