@@ -8,26 +8,33 @@ const __dirname = path.resolve();
 
 // Vite configuration
 export default defineConfig({
-  plugins: [react(),dts()],
+  plugins: [
+    react(),
+    dts({
+      insertTypesEntry: true,
+      include: ['src/**/*'],
+      exclude: ['src/**/*.test.*', 'src/**/*.spec.*'],
+    })
+  ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'index.ts'),
+      entry: path.resolve(__dirname, 'src/lib/index.ts'),
       name: 'ReactAutoPageRouter',
-      fileName: (format) => `react-auto-page-router.${format}.js`,
-      // formats: ['es', 'cjs'],
+      formats: ['es', 'umd'],
+      fileName: (format) => `react-auto-page-router.${format}.js`
     },
     rollupOptions: {
-      // Externalize dependencies that shouldn't be bundled into your library
       external: ['react', 'react-dom', 'react-router-dom'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          'react-router-dom': 'ReactRouterDOM',
-        },
-      },
+          'react-router-dom': 'ReactRouterDOM'
+        }
+      }
     },
-    sourcemap : true,
+    sourcemap: true,
+    outDir: 'dist',
     emptyOutDir: true,
-  },
+  }
 });

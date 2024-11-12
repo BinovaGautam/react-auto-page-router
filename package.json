@@ -7,11 +7,12 @@
   "module": "dist/react-auto-page-router.es.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsc   && vite build",
-    "type-check": "tsc --noEmit",
-    "rebuild": "rm -rf dist && tsc   && vite build",
-    "prepare": "npm run rebuild"
+    "dev": "vite",
+    "build": "vite build",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "prepare": "npm run build",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "vite": "^5.2.0"
@@ -44,6 +45,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.13",
+    "react-router-dom": "6.23.1",
+    "rimraf": "^6.0.1",
     "typescript": "^5.2.2",
     "vite-plugin-dts": "^3.9.1"
   },

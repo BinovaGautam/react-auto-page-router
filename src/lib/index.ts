@@ -1,3 +1,4 @@
-export {default as ErrorBoundary} from './ErrorBoundry';
+export { createRoutes } from './routes';
+export { AutoRouter } from './AutoRouter';
 export * from './helpers';
-export * from './routes';
+export type { IBaseRoute } from './routes';
