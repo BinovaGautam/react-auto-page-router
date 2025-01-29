@@ -53,5 +53,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BinovaGautam/react-auto-page-router.git"
-  }
+  },
+  "license": "MIT"
 }

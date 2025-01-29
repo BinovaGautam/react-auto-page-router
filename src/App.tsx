@@ -26,7 +26,6 @@ function App({
   importedPages = {}
 
 }: IAppConfig) {
-  console.log('importedPages =====>>>>>>>', importedPages);
   const routes = createRoutes(importedPages);
 
   const renderWithLayouts = (Component: FunctionComponent<ComponentProps>, layouts: FunctionComponent[]) => {

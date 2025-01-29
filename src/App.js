@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-
 import { createRoutes, ErrorBoundary } from './lib';
 const NotFound = () => (_jsxs("div", { style: { height: '100vh', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', }, children: [_jsx("h1", { children: "404!" }), _jsx("h2", { children: "Page Not Found" })] }));
 function App({ SuspenseFallBack = _jsx("div", { children: "Loading..." }), importedPages = {} }) {
-    console.log('importedPages =====>>>>>>>', importedPages);
     const routes = createRoutes(importedPages);
     const renderWithLayouts = (Component, layouts) => {
         const WrapperComponent = () => {
