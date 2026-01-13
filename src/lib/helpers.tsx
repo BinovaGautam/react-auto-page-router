@@ -1,5 +1,5 @@
 import React, { ComponentType, ReactNode, LazyExoticComponent } from 'react';
-import ErrorBoundary from './ErrorBoundry';
+import ErrorBoundary from './ErrorBoundary';
 
 export function withErrorBoundary(
     Component: LazyExoticComponent<ComponentType<any>>,

@@ -26,15 +26,12 @@ const createRoutes = (importPages: Record<string, any>) => {
         return a.localeCompare(b);
     });
     
-    console.log('Sorted import pages: hello here we go', { sortedPaths });
-    
     // Store layout components separately
     const layouts: Record<string, LazyExoticComponent<ComponentType<any>>[]> = {};
     
     // Generate a route object for each page component
     const routes: IBaseRoute[] = sortedPaths.map((path, counter) => {
-        console.log('Processing path:', { path, counter, layouts });
-    
+        
         // Remove the '/src/app' and the file extension from the file path
         let routePath = path.replace('/src/app', '').replace(/\.(js|jsx|ts|tsx)$/, '');
     
@@ -49,8 +46,6 @@ const createRoutes = (importPages: Record<string, any>) => {
         const currentEnd = routePath.split('/').pop();
         const basePath = routePath === '/' + currentEnd ? '__ROOT__' : routePath.replace('/' + currentEnd, '');
     
-        console.log('Determined path components:', { currentEnd, routePath, basePath });
-    
         // Check if the file is a page component or a layout component
         const isPage = routeConfig.allowedEndFile.some((endFile) => currentEnd === endFile);
         if (!isPage) return false;
@@ -63,7 +58,6 @@ const createRoutes = (importPages: Record<string, any>) => {
         if (currentEnd === 'layout') {
             layouts[basePath] = layouts[basePath] || [];
             layouts[basePath].push(component);
-            console.log('Added layout component:', { currentEnd, routePath, basePath, layouts });
             return false;
         }
     
@@ -75,8 +69,7 @@ const createRoutes = (importPages: Record<string, any>) => {
             layoutPaths.push('__ROOT__');
         }
     
-        console.log('Final route details:', { path, counter, layouts, layoutPaths });
-        const layout: LazyExoticComponent<ComponentType<any>>[] = layoutPaths.reduce((acc, layoutPath) => {
+         const layout: LazyExoticComponent<ComponentType<any>>[] = layoutPaths.reduce((acc, layoutPath) => {
             acc.push(...layouts[layoutPath]);
             return acc;
         }, [] as LazyExoticComponent<ComponentType<any>>[]);
