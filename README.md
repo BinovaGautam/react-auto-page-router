@@ -7,14 +7,14 @@
 
 Install the package via npm or yarn:
 
-```
-npm install react-auto-page-router
+```bash
+npm install react-auto-page-router react-router-dom
 ```
 
 or
 
-```
-yarn add react-auto-page-router
+```bash
+yarn add react-auto-page-router react-router-dom
 ```
 
 ## Usage
@@ -41,7 +41,7 @@ In your App.tsx file, use the import.meta.glob to dynamically import the page co
 
 **src/App.tsx**:
 
-```
+```tsx
 import React from 'react';
 import { AutoRouter } from 'react-auto-page-router';
 
@@ -77,19 +77,70 @@ src/
 **Routes Generated**:
 
 -   / -> Home.page.tsx
-    
 -   /about -> About.page.tsx
-    
 -   /blog/:id -> [id].page.tsx
-    
+
+## API
+
+### AutoRouter
+
+The AutoRouter component is the core of the library, automatically configuring routes based on your file structure.
+
+#### Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `importedPages` | `Record<string, any>` | *required* | Object returned by `import.meta.glob` containing page components |
+| `SuspenseFallBack` | `React.ReactNode` | `<div>Loading...</div>` | Fallback component shown while pages are loading |
+| `withRouter` | `boolean` | `true` | Whether to wrap with BrowserRouter. Set to `false` if providing your own router |
+
+### Using Your Own Router (Advanced)
+
+If you need to use a different router type (HashRouter, MemoryRouter) or configure router options, set `withRouter={false}`:
+
+```tsx
+import { HashRouter } from 'react-router-dom';
+import { AutoRouter } from 'react-auto-page-router';
+
+const importPages = import.meta.glob('/src/app/**/*.{js,jsx,ts,tsx}');
+
+const App = () => {
+  return (
+    <HashRouter>
+      <AutoRouter importedPages={importPages} withRouter={false} />
+    </HashRouter>
+  );
+}
+
+export default App;
+```
+
+### Page Component Props
+
+Your page components receive `params` and `searchParams` as props:
+
+```tsx
+// src/app/blog/[id].page.tsx
+interface PageProps {
+  params: { id: string };
+  searchParams: URLSearchParams;
+}
+
+export default function BlogPost({ params, searchParams }: PageProps) {
+  return (
+    <div>
+      <h1>Blog Post: {params.id}</h1>
+      <p>Query: {searchParams.get('query')}</p>
+    </div>
+  );
+}
+```
 
 ### Error Handling
 
 The package includes an ErrorBoundary component that can be used to wrap your components for better error handling.
 
-**Example of** ErrorBoundary:
-
-```
+```tsx
 import React from 'react';
 import { ErrorBoundary } from 'react-auto-page-router';
 
@@ -111,33 +162,11 @@ const MyComponent = () => {
 export default MyComponent;
 ```
 
-## API
-
-### AutoRouter
-
-The AutoRouter component is the core of the library, automatically configuring routes based on your file structure.
-
-#### Props
-
--   importedPages: An object returned by import.meta.glob containing the dynamic imports for your page components.
-    
-
-### ErrorBoundary
-
-The ErrorBoundary component catches JavaScript errors in its child component tree and displays a fallback UI.
-
-#### Props
-
--   fallback: A React node to display when an error is caught.
-    
-
 ### withErrorBoundary
 
 A higher-order component (HOC) that wraps a component with an ErrorBoundary.
 
-#### Usage
-
-```
+```tsx
 import React, { lazy } from 'react';
 import { withErrorBoundary } from 'react-auto-page-router';
 
@@ -151,10 +180,6 @@ export default WrappedComponent;
 ## Vite-Specific Features
 
 The import.meta.glob feature is specific to Vite. This library is optimized for use with Vite, which makes setting up dynamic routes extremely simple. If you're using another build tool or bundler, you might need to adapt the code or manually provide a similar glob functionality.
-
-## Simplified Autorouting
-
-With react-auto-page-router, you can achieve Next.js-like routing in your React applications with minimal setup. Just organize your files, use the AutoRouter component, and enjoy automatic, dynamic routing without the hassle.
 
 ## License
 
